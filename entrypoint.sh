@@ -31,11 +31,16 @@ if [[ $MESSAGE =~ "AUTO" ]]; then
   exit 0
 fi
 
+ALLOW_MERGES=''
+if [[ ${INPUT_ALLOW_MERGES} == 'true' ]]; then
+  ALLOW_MERGES='-m'
+fi
+
 git_setup
 git_cmd git remote update
 git_cmd git fetch --all
 git_cmd git checkout -b "${PR_BRANCH}" origin/"${INPUT_PR_BRANCH}"
 git_cmd git push -u origin "${PR_BRANCH}"
-git_cmd git cherry-pick "${GITHUB_SHA}"
+git_cmd git cherry-pick ${ALLOW_MERGES} "${GITHUB_SHA}"
 git_cmd git push
 git_cmd hub pull-request -b "${INPUT_PR_BRANCH}" -h "${PR_BRANCH}" -l "${INPUT_PR_LABELS}" -a "${GITHUB_ACTOR}" -m "\"AUTO: ${MESSAGE}\""

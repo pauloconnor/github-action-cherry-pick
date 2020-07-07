@@ -9,6 +9,10 @@ inputs:
     description: 'Labels for the new PR'
     required: false
     default: 'autocreated'
+  allow_merges:
+    description: 'Allow merge SHAs to be cherry_picked'
+    required: false
+    default: 'false'
 runs:
   using: 'docker'
   image: 'Dockerfile'
